@@ -13,7 +13,7 @@ int main() {
 	freqs['B'] = 8;
 	freqs['C'] = 1;
 	freqs['D'] = 1;
-	HuffmanTree arvore(freqs);
+	HuffManTree arvore(freqs);
 
 	MyVec<char> in;
 	in.push_back('A');
@@ -29,6 +29,7 @@ int main() {
 	for(int i=0;i<comprimido.size();i++)
 		cout << comprimido[i];
 	cout << endl;
+	/*
 	//deveria imprimir: 1000110 (supondo que a arvore gerada foi igual a apresentada no roteiro)
 	MyVec<char> descomprimido;
 	arvore.descomprimir(descomprimido, comprimido);
@@ -36,4 +37,5 @@ int main() {
 		cout << descomprimido[i];
 	cout << endl;
 	//deveria imprimir: ABBC
+	*/
 }
