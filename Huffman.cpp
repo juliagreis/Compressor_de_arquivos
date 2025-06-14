@@ -1,5 +1,24 @@
 #include "Huffman.h"
 
+Node::Node(const Node &other) : simbolo(other.simbolo), freq(other.freq), left(NULL), right(NULL) {
+    if(other.left) left = new Node(*other.left);
+    if(other.right) right = new Node(*other.right);
+}
+
+//os operadores estao invertidos para que esteja ordenado em ordem CRESCENTE
+bool NodoWrapper::operator<(const NodoWrapper& other) const {
+    if (!ptr) return true;          // considera null menor
+    if (!other.ptr) return false;
+    return ptr->freq > other.ptr->freq;
+}
+
+bool NodoWrapper::operator>(const NodoWrapper& other) const {
+    if (!ptr) return false;
+    if (!other.ptr) return true;
+    return ptr->freq < other.ptr->freq;
+}
+
+
 
 //------------FUNCOES AUXILIARES---------------//
 
@@ -17,7 +36,7 @@ Node* HuffManTree::criaArvore(){
             5)Retire AB(4) e C(5)
             6)Crie novo nodo com freq = 9 → esse será a raiz
 */
-    MyPriorityQueue<NodoWrapper> fila;
+MyPriorityQueue<NodoWrapper> fila;
     //guarda todos os nodos folha na fila
     for (int i = 0; i < 256; i++) {
         if (frequencia[i] > 0) {
@@ -153,34 +172,21 @@ void HuffManTree::comprimir(MyVec<bool> &out, const MyVec<char> &in) const{
 
     gerarCodigo(root,caminho,codigo);
 
-    /*
-    //debugando
-    for (int i = 0; i < 256; i++) {
-    if (codigo[i].size() > 0) {
-        std::cout << "Código para '" << (char)i << "': ";
-        for (int j = 0; j < codigo[i].size(); j++) {
-            std::cout << (codigo[i][j] ? '1' : '0');
-        }
-        std::cout << std::endl;
-        }
-    }
-    */
     //comprime
     for(int i=0;i<in.size();i++){
         unsigned char caracter = (unsigned char) in[i];
         if (codigo[caracter].size() > 0) { // Verifica se há código para o caractere
             for(int j=0;j< codigo[caracter].size();j++){
             out.push_back(codigo[caracter][j]);
+            }
         }
     }
-    }
-
 }
    
 void HuffManTree::descomprimir(MyVec<char> &out, const MyVec<bool> &in) const{
     if (!root || in.size() == 0) return;
 
-    // Caso especial: árvore com um único nó (apenas um caractere)
+    //se é arvore com um único nodo
     if (!root->left && !root->right) {
         for (int i = 0; i < in.size(); i++) {
             out.push_back(root->simbolo);

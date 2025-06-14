@@ -18,13 +18,8 @@ class Node{  //classe auxiliar - encapsulamento nao necessario
         Node* right;
 
         Node(unsigned char s, int f) : simbolo(s), freq(f), left(NULL), right(NULL) {}
-    
         ~Node(){left = NULL; right = NULL;}
-
-        Node(const Node &other) : simbolo(other.simbolo), freq(other.freq), left(NULL), right(NULL) {
-            if(other.left) left = new Node(*other.left);
-            if(other.right) right = new Node(*other.right);
-        }
+        Node(const Node &other);
 };
 class NodoWrapper {
 public:
@@ -32,19 +27,9 @@ public:
 
     NodoWrapper() : ptr(NULL) {}           
     NodoWrapper(Node* n) : ptr(n) {}
-
-    //Ambos os operadores estao invertidos, para que esteja ordenado em ordem CRESCENTE 
-    bool operator<(const NodoWrapper& other) const {
-        if (!ptr) return true;          // considera null menor
-        if (!other.ptr) return false;
-        return ptr->freq > other.ptr->freq;
-    }
-
-    bool operator>(const NodoWrapper& other) const {
-        if (!ptr) return false;
-        if (!other.ptr) return true;
-        return ptr->freq < other.ptr->freq;
-    }
+ 
+    bool operator<(const NodoWrapper& other) const;
+    bool operator>(const NodoWrapper& other) const;
 };
 
 class HuffManTree{
