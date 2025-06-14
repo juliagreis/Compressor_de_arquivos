@@ -153,6 +153,7 @@ void HuffManTree::comprimir(MyVec<bool> &out, const MyVec<char> &in) const{
 
     gerarCodigo(root,caminho,codigo);
 
+    /*
     //debugando
     for (int i = 0; i < 256; i++) {
     if (codigo[i].size() > 0) {
@@ -161,8 +162,9 @@ void HuffManTree::comprimir(MyVec<bool> &out, const MyVec<char> &in) const{
             std::cout << (codigo[i][j] ? '1' : '0');
         }
         std::cout << std::endl;
+        }
     }
-}
+    */
     //comprime
     for(int i=0;i<in.size();i++){
         unsigned char caracter = (unsigned char) in[i];
@@ -176,5 +178,23 @@ void HuffManTree::comprimir(MyVec<bool> &out, const MyVec<char> &in) const{
 }
    
 void HuffManTree::descomprimir(MyVec<char> &out, const MyVec<bool> &in) const{
-    
+    if (!root || in.size() == 0) return;
+
+    // Caso especial: árvore com um único nó (apenas um caractere)
+    if (!root->left && !root->right) {
+        for (int i = 0; i < in.size(); i++) {
+            out.push_back(root->simbolo);
+        }
+        return;
+    }
+
+    Node* atual = root;
+    for (int i = 0; i < in.size(); i++) {
+        atual = in[i] ? atual->right : atual->left;
+
+        if (!atual->left && !atual->right) {
+            out.push_back(atual->simbolo);
+            atual = root; // reinicia da raiz
+        }
+    }
 }
