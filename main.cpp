@@ -24,7 +24,6 @@ int main(int argc, char *argv[]){
         }
         in.close();
 
-        if(entrada.size() == 0) return; //se o arquivo tiver vazio, nao faco nada
 
         //escreve as frequências no arquivo de saída (em binário)
         for (int i = 0; i < 256; i++) {
